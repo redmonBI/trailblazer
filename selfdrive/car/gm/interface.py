@@ -38,6 +38,8 @@ class CarInterface(CarInterfaceBase):
   def get_steer_feedforward_function(self):
     if self.CP.carFingerprint == CAR.VOLT:
       return self.get_steer_feedforward_volt
+    elif self.CP.carFingerprint == CAR.TRAILBLAZER:
+      return self.get_steer_feedforward_volt
     elif self.CP.carFingerprint == CAR.ACADIA:
       return self.get_steer_feedforward_acadia
     else:
@@ -194,6 +196,26 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = 2.72
       ret.steerRatio = 14.4
       ret.centerToFront = ret.wheelbase * 0.4
+      CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
+
+    elif candidate == CAR.TRAILBLAZER:
+      ret.mass = 1365. + STD_CARGO_KG
+      ret.wheelbase = 2.64
+      ret.steerRatio = 17.7
+      ret.centerToFront = ret.wheelbase * 0.45
+      tire_stiffness_factor = 1.0
+      #ret.steerActuatorDelay = 0.13
+      ret.minSteerSpeed = -1.
+      ret.minEnableSpeed = -1.  # engage speed is decided by pcm
+      ret.autoResumeSng = True
+
+      # FIXME: (PID parameter) copy from volt
+      ret.lateralTuning.pid.kpBP = [0., 40.]
+      ret.lateralTuning.pid.kpV = [0., 0.17]
+      ret.lateralTuning.pid.kiBP = [0.]
+      ret.lateralTuning.pid.kiV = [0.]
+      ret.lateralTuning.pid.kf = 1.  # get_steer_feedforward_volt()
+      ret.steerActuatorDelay = 0.2
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
     # TODO: start from empirically derived lateral slip stiffness for the civic and scale by
