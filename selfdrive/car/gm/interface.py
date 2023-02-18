@@ -207,13 +207,11 @@ class CarInterface(CarInterfaceBase):
       #ret.steerActuatorDelay = 0.13
       ret.minSteerSpeed = -1.
       ret.minEnableSpeed = -1.  # engage speed is decided by pcm
-      ret.autoResumeSng = True
 
       # FIXME: (PID parameter) copy from volt
-      ret.lateralTuning.pid.kpBP = [0., 40.]
-      ret.lateralTuning.pid.kpV = [0., 0.17]
-      ret.lateralTuning.pid.kiBP = [0.]
-      ret.lateralTuning.pid.kiV = [0.]
+      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0., 40.]]
+      ret.lateralTuning.pid.kiV, ret.lateralTuning.pid.kpV = [[0.], [0., 0.17]]
+      
       ret.lateralTuning.pid.kf = 1.  # get_steer_feedforward_volt()
       ret.steerActuatorDelay = 0.2
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
