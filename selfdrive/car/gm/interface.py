@@ -71,7 +71,7 @@ class CarInterface(CarInterfaceBase):
   def _get_params(ret, candidate, fingerprint, car_fw, experimental_long, docs):
     ret.carName = "gm"
     ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.gm)]
-    ret.autoResumeSng = False
+    ret.autoResumeSng = True
 
     if candidate in EV_CAR:
       ret.transmissionType = TransmissionType.direct
