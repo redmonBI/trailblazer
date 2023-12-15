@@ -286,7 +286,9 @@ def manager_init(frogpilot_functions) -> None:
     ("WarningSoftVolume", "100"),
     ("WarningImmediateVolume", "100"),
     ("WheelIcon", "3"),
-    ("WheelSpeed", "0")
+    ("WheelSpeed", "0"),
+    ("AutoNaviSpeedCtrlStart", "25"),
+    ("AutoNaviSpeedCtrlEnd", "15"),
   ]
   if not PC:
     default_params.append(("LastUpdateTime", datetime.datetime.utcnow().isoformat().encode('utf8')))
