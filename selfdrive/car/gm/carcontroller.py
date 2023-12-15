@@ -55,7 +55,7 @@ class CarController:
     #Boltpilot pedal
     accGain = 0.1429  # This value is the result of testing by several users.
 
-    DecelZero = interp(car_velocity, [0., 3, 10, 15, 30], [0, 0.185, 0.245, 0.25, 0.280])
+    DecelZero = interp(car_velocity, [0., 3, 10, 15, 30], [0, 0.190, 0.245, 0.25, 0.280])
     AccelZero = interp(car_velocity, [0., 3, 10, 15, 30], [0.05, 0.130, 0.185, 0.215, 0.280])
     ZeroRatio = interp(accel, [-3.5, 2], [1.0, 0.0])
     zero = DecelZero * ZeroRatio + AccelZero * (1 - ZeroRatio)
