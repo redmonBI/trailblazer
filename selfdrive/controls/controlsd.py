@@ -950,7 +950,7 @@ class Controls:
       self.is_metric = self.params.get_bool("IsMetric")
       if self.CP.openpilotLongitudinalControl:
          if not self.conditional_experimental_mode:
-            self.experimental_mode = self.params.get_bool("ExperimentalMode")
+           self.experimental_mode = self.params.get_bool("ExperimentalMode") or self.params_memory.get_bool("SLCExperimentalMode")
       else:
         self.experimental_mode = False
       if self.CP.notCar:
