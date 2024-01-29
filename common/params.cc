@@ -357,6 +357,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"UpdateTime", PERSISTENT},
     {"UseSI", PERSISTENT},
     {"UseVienna", PERSISTENT},
+    {"WheelIcon", PERSISTENT},
 };
 
 } // namespace
