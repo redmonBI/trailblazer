@@ -53,7 +53,7 @@ class VCruiseHelper:
     self.v_cruise_kph_last = self.v_cruise_kph
 
     if CS.cruiseState.available:
-      if not self.CP.pcmCruise:
+      if not self.CP.pcmCruise or frogpilot_variables.CSLC:
         # if stock cruise is completely disabled, then we can use our own set speed logic
         self._update_v_cruise_non_pcm(CS, enabled, is_metric, frogpilot_variables)
         self.v_cruise_cluster_kph = self.v_cruise_kph
@@ -135,9 +135,14 @@ class VCruiseHelper:
         self.button_timers[b.type.raw] = 1 if b.pressed else 0
         self.button_change_states[b.type.raw] = {"standstill": CS.cruiseState.standstill, "enabled": enabled}
 
-  def initialize_v_cruise(self, CS, experimental_mode: bool, conditional_experimental_mode) -> None:
+  def initialize_v_cruise(self, CS, frogpilot_variables, experimental_mode: bool, conditional_experimental_mode) -> None:
     # initializing is handled by the PCM
-    if self.CP.pcmCruise:
+    if self.CP.pcmCruise and not frogpilot_variables.CSLC:
+      return
+
+    if frogpilot_variables.CSLC:
+      self.v_cruise_kph = CS.cruiseState.speed * CV.MS_TO_KPH
+      self.v_cruise_cluster_kph = self.v_cruise_kph
       return
 
     initial = V_CRUISE_INITIAL_EXPERIMENTAL_MODE if experimental_mode and not conditional_experimental_mode else V_CRUISE_INITIAL

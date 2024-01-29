@@ -102,6 +102,7 @@ FrogPilotVehiclesPanel::FrogPilotVehiclesPanel(SettingsWindow *parent) : FrogPil
   addItem(forceFingerprint);
 
   std::vector<std::tuple<QString, QString, QString, QString>> vehicleToggles {
+    {"CSLCEnabled", "GM SDGM CSLC", "Set cars cruise speed based on SLC, MTSC, and VTSC.", ""},
     {"EVTable", "EV Lookup Tables", "Smoothen out the gas and brake controls for EV vehicles.", ""},
     {"GasRegenCmd", "GM Truck Gas Tune", "Increase acceleration and smoothen brake to stop. For use on Silverado/Sierra only.", ""},
     {"LongPitch", "Long Pitch Compensation", "Reduce speed and acceleration error for greater passenger comfort and improved vehicle efficiency.", ""},
@@ -124,7 +125,7 @@ FrogPilotVehiclesPanel::FrogPilotVehiclesPanel(SettingsWindow *parent) : FrogPil
     });
   }
 
-  gmKeys = {"EVTable", "GasRegenCmd", "LongPitch", "LowerVolt"};
+  gmKeys = {"CSLCEnabled", "EVTable", "GasRegenCmd", "LongPitch", "LowerVolt"};
   toyotaKeys = {"LockDoors", "SNGHack", "TSS2Tune"};
 
   std::set<std::string> rebootKeys = {"GasRegenCmd", "LongPitch", "LowerVolt", "TSS2Tune"};

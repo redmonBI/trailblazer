@@ -18,6 +18,7 @@ TARGET_LAT_A = 1.9  # m/s^2
 
 class FrogPilotPlanner:
   def __init__(self, params, params_memory):
+    self.params_memory = params_memory
     self.cem = ConditionalExperimentalMode()
     self.mtsc = MapTurnSpeedController()
 
@@ -68,6 +69,8 @@ class FrogPilotPlanner:
     else:
       self.lane_width_left = 0
       self.lane_width_right = 0
+
+    self.params_memory.put_int("CSLCSpeed", int(round(self.v_cruise * CV.MS_TO_MPH)))
 
   def update_v_cruise(self, carState, controlsState, modelData, enabled, v_cruise, v_ego):
     # Pfeiferj's Map Turn Speed Controller
@@ -128,7 +131,11 @@ class FrogPilotPlanner:
     else:
       self.vtsc_target = v_cruise
 
-    v_ego_diff = max(carState.vEgoRaw - carState.vEgoCluster, 0)
+    if self.CSLC:
+      v_ego_diff = 0
+    else:
+      v_ego_diff = max(carState.vEgoRaw - carState.vEgoCluster, 0)
+
     return min(v_cruise, self.mtsc_target, self.slc_target, self.vtsc_target) - v_ego_diff
 
   def publish(self, sm, pm, mpc):
@@ -160,6 +167,8 @@ class FrogPilotPlanner:
 
   def update_frogpilot_params(self, params, params_memory):
     self.is_metric = params.get_bool("IsMetric")
+
+    self.CSLC = params.get_bool("CSLCEnabled")
 
     self.conditional_experimental_mode = params.get_bool("ConditionalExperimental")
     if self.conditional_experimental_mode:
