@@ -7,7 +7,7 @@
 #include "selfdrive/ui/ui.h"
 
 class ScreenRecorder : public QPushButton {
-#ifdef WSL2
+#ifdef NO_SR
   public:
     explicit ScreenRecorder(QWidget *parent = nullptr){}
     ~ScreenRecorder() override{}
@@ -51,5 +51,5 @@ private:
   BlockingQueue<QImage> image_queue;
   QColor recording_color;
   QWidget *rootWidget;
-#endif //WSL2
+#endif //NO_SR
 };
