@@ -249,8 +249,8 @@ def below_steer_speed_alert(CP: car.CarParams, CS: car.CarState, sm: messaging.S
 def calibration_incomplete_alert(CP: car.CarParams, CS: car.CarState, sm: messaging.SubMaster, metric: bool, soft_disable_time: int) -> Alert:
   first_word = _('Recalibration') if sm['liveCalibration'].calStatus == log.LiveCalibrationData.Status.recalibrating else _('Calibration')
   return Alert(
-    _("{word} in Progress: {perc}%").format(word=first_word, perc=sm['liveCalibration'].calPerc),
-    _("Drive Above {speed}").format(speed=get_display_speed(MIN_SPEED_FILTER, metric)),
+    _("{word} 진행률 : {perc}%").format(word=first_word, perc=sm['liveCalibration'].calPerc),
+    _("{speed}이상으로 주행하세요").format(speed=get_display_speed(MIN_SPEED_FILTER, metric)),
     AlertStatus.normal, AlertSize.mid,
     Priority.LOWEST, VisualAlert.none, AudibleAlert.none, .2)
 
@@ -507,7 +507,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
 
   EventName.resumeRequired: {
     ET.WARNING: Alert(
-      _("Press Resume to Exit Standstill"),
+      _("재출발이 필요합니다."),
       "",
       AlertStatus.userPrompt, AlertSize.small,
       Priority.MID, VisualAlert.none, AudibleAlert.none, .2),
@@ -519,7 +519,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
 
   EventName.preLaneChangeLeft: {
     ET.WARNING: Alert(
-      _("Steer Left to Start Lane Change Once Safe"),
+      _("좌측주의"),
       "",
       AlertStatus.normal, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .1, alert_rate=0.75),
@@ -527,7 +527,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
 
   EventName.preLaneChangeRight: {
     ET.WARNING: Alert(
-      _("Steer Right to Start Lane Change Once Safe"),
+      _("우측주의"),
       "",
       AlertStatus.normal, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .1, alert_rate=0.75),
@@ -543,7 +543,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
 
   EventName.laneChange: {
     ET.WARNING: Alert(
-      _("Changing Lanes"),
+      _("차선변경"),
       "",
       AlertStatus.normal, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .1),
@@ -551,8 +551,8 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
 
   EventName.steerSaturated: {
     ET.WARNING: Alert(
-      _("Take Control"),
-      _("Turn Exceeds Steering Limit"),
+      _("핸들을 잡아주세요"),
+      _("최대 조향각에 도달"),
       AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.steerRequired, AudibleAlert.promptRepeat, 2.),
   },
@@ -897,12 +897,12 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
 
   EventName.reverseGear: {
     ET.PERMANENT: Alert(
-      _("Reverse\nGear"),
+      _("후진"),
       "",
       AlertStatus.normal, AlertSize.full,
       Priority.LOWEST, VisualAlert.none, AudibleAlert.none, .2, creation_delay=0.5),
-    ET.USER_DISABLE: ImmediateDisableAlert(_("Reverse Gear")),
-    ET.NO_ENTRY: NoEntryAlert(_("Reverse Gear")),
+    ET.USER_DISABLE: ImmediateDisableAlert(_("후진")),
+    ET.NO_ENTRY: NoEntryAlert(_("후진")),
   },
 
   # On cars that use stock ACC the car can decide to cancel ACC for various reasons.

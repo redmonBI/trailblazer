@@ -83,8 +83,8 @@ class CarInterface(CarInterfaceBase):
     ret.longitudinalTuning.deadzoneBP = [0.]
     ret.longitudinalTuning.deadzoneV = [0.15]
 
-    ret.longitudinalTuning.kpBP = [5., 35.]
-    ret.longitudinalTuning.kiBP = [0.]
+    ret.longitudinalTuning.kpBP = [0, 20, 40, 60]
+    ret.longitudinalTuning.kiBP = [0, 20, 40, 60]
 
     if candidate in CAMERA_ACC_CAR:
       ret.experimentalLongitudinalAvailable = True
@@ -96,8 +96,8 @@ class CarInterface(CarInterfaceBase):
       ret.minSteerSpeed = 10 * CV.KPH_TO_MS
 
       # Tuning for experimental long
-      ret.longitudinalTuning.kpV = [2.0, 1.5]
-      ret.longitudinalTuning.kiV = [0.72]
+      ret.longitudinalTuning.kpV = [0.75, 0.75, 1.]
+      ret.longitudinalTuning.kiV = [.05, .07, .11]
       ret.stoppingDecelRate = 2.0  # reach brake quickly after enabling
       ret.vEgoStopping = 0.25
       ret.vEgoStarting = 0.25
@@ -256,6 +256,15 @@ class CarInterface(CarInterfaceBase):
       ret.steerActuatorDelay = 0.2
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
+    elif candidate == CAR.TRAX:
+      ret.mass = 1365.
+      ret.wheelbase = 2.7
+      ret.steerRatio = 16.4
+      ret.centerToFront = ret.wheelbase * 0.4
+      ret.tireStiffnessFactor = 1.0
+      ret.steerActuatorDelay = 0.2
+      CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
+
     return ret
 
   # returns a car.CarState
@@ -278,13 +287,13 @@ class CarInterface(CarInterfaceBase):
     # Enabling at a standstill with brake is allowed
     # TODO: verify 17 Volt can enable for the first time at a stop and allow for all GMs
     below_min_enable_speed = ret.vEgo < self.CP.minEnableSpeed or self.CS.moving_backward
-    if below_min_enable_speed and not (ret.standstill and ret.brake >= 20 and
-                                       self.CP.networkLocation == NetworkLocation.fwdCamera):
-      events.add(EventName.belowEngageSpeed)
+    #if below_min_enable_speed and not (ret.standstill and ret.brake >= 20 and
+     #                                  self.CP.networkLocation == NetworkLocation.fwdCamera):
+     # events.add(EventName.belowEngageSpeed)
     if ret.cruiseState.standstill:
       events.add(EventName.resumeRequired)
-    if ret.vEgo < self.CP.minSteerSpeed:
-      events.add(EventName.belowSteerSpeed)
+    #if ret.vEgo < self.CP.minSteerSpeed:
+      #events.add(EventName.belowSteerSpeed)
 
     ret.events = events.to_msg()
 
