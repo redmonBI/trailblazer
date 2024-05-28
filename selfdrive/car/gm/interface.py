@@ -351,7 +351,7 @@ class CarInterface(CarInterfaceBase):
       self.disable_resumeRequired = True
 
     if ret.vEgo < self.CP.minSteerSpeed and not self.disable_belowSteerSpeed:
-      events.add(EventName.belowSteerSpeed)
+      #events.add(EventName.belowSteerSpeed)
       self.belowSteerSpeed_shown = True
 
     # Disable the "belowSteerSpeed" event after it's been shown once to not annoy the driver
